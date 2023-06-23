@@ -1,6 +1,6 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.jitsi.meet"
+    package="com.vietconsultant.advancedcare.meet"
     android:installLocation="auto">
   <application
       android:allowBackup="true"

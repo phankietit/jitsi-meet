@@ -31,7 +31,7 @@ typedef enum {
 } JitsiMeetAudioMode;
 
 // Events
-static NSString * const kDevicesChanged = @"org.jitsi.meet:features/audio-mode#devices-update";
+static NSString * const kDevicesChanged = @"com.vietconsultant.advancedcare.meet:features/audio-mode#devices-update";
 
 // Device types (must match JS and Java)
 static NSString * const kDeviceTypeBluetooth  = @"BLUETOOTH";
@@ -170,7 +170,7 @@ RCT_EXPORT_METHOD(setMode:(int)mode
     } else {
         reject(@"setMode", error.localizedDescription, error);
     }
-    
+
     [self notifyDevicesChanged];
 }
 
@@ -178,16 +178,16 @@ RCT_EXPORT_METHOD(setAudioDevice:(NSString *)device
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
     RCTLogInfo(@"[AudioMode] Selected device: %@", device);
-    
+
     RTCAudioSession *session = JitsiAudioSession.rtcAudioSession;
     [session lockForConfiguration];
     BOOL success;
     NSError *error = nil;
-    
+
     // Reset these, as we are about to compute them.
     forceSpeaker = NO;
     forceEarpiece = NO;
-    
+
     // The speaker is special, so test for it first.
     if ([device isEqualToString:kDeviceTypeSpeaker]) {
         forceSpeaker = YES;
@@ -210,7 +210,7 @@ RCT_EXPORT_METHOD(setAudioDevice:(NSString *)device
             if (isSpeakerOn) {
                 [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
             }
-            
+
             // Special case for the earpiece.
             if ([port.portType isEqualToString:AVAudioSessionPortBuiltInMic]) {
                 forceEarpiece = YES;
@@ -228,9 +228,9 @@ RCT_EXPORT_METHOD(setAudioDevice:(NSString *)device
             error = RCTErrorWithMessage(@"Could not find audio device");
         }
     }
-    
+
     [session unlockForConfiguration];
-    
+
     if (success) {
         resolve(nil);
     } else {
@@ -324,7 +324,7 @@ RCT_EXPORT_METHOD(updateDeviceList) {
             || [portType isEqualToString:AVAudioSessionPortBluetoothA2DP]) {
         return kDeviceTypeBluetooth;
     } else if ([portType isEqualToString:AVAudioSessionPortCarAudio]) {
-        return kDeviceTypeCar; 
+        return kDeviceTypeCar;
     } else {
         return kDeviceTypeUnknown;
     }
@@ -337,7 +337,7 @@ RCT_EXPORT_METHOD(updateDeviceList) {
         AVAudioSession *session = [AVAudioSession sharedInstance];
         NSString *currentPort = @"";
         AVAudioSessionRouteDescription *currentRoute = session.currentRoute;
-        
+
         // Check what the current device is. Because the speaker is somewhat special, we need to
         // check for it first.
         if (currentRoute != nil) {
@@ -352,7 +352,7 @@ RCT_EXPORT_METHOD(updateDeviceList) {
                 self->isEarpieceOn = [input.portType isEqualToString:AVAudioSessionPortBuiltInMic];
             }
         }
-        
+
         BOOL headphonesAvailable = NO;
         for (AVAudioSessionPortDescription *portDesc in session.availableInputs) {
             if ([portDesc.portType isEqualToString:AVAudioSessionPortHeadsetMic] || [portDesc.portType isEqualToString:AVAudioSessionPortHeadphones]) {
@@ -384,7 +384,7 @@ RCT_EXPORT_METHOD(updateDeviceList) {
                @"uid": kDeviceTypeSpeaker,
                @"selected": [NSNumber numberWithBool:[kDeviceTypeSpeaker isEqualToString:currentPort]]
         }];
-        
+
         [self sendEventWithName:kDevicesChanged body:data];
     });
 }

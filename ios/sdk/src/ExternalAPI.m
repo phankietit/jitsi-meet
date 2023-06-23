@@ -17,16 +17,16 @@
 #import "ExternalAPI.h"
 
 // Events
-static NSString * const hangUpAction = @"org.jitsi.meet.HANG_UP";
-static NSString * const setAudioMutedAction = @"org.jitsi.meet.SET_AUDIO_MUTED";
-static NSString * const sendEndpointTextMessageAction = @"org.jitsi.meet.SEND_ENDPOINT_TEXT_MESSAGE";
-static NSString * const toggleScreenShareAction = @"org.jitsi.meet.TOGGLE_SCREEN_SHARE";
-static NSString * const retrieveParticipantsInfoAction = @"org.jitsi.meet.RETRIEVE_PARTICIPANTS_INFO";
-static NSString * const openChatAction = @"org.jitsi.meet.OPEN_CHAT";
-static NSString * const closeChatAction = @"org.jitsi.meet.CLOSE_CHAT";
-static NSString * const sendChatMessageAction = @"org.jitsi.meet.SEND_CHAT_MESSAGE";
-static NSString * const setVideoMutedAction = @"org.jitsi.meet.SET_VIDEO_MUTED";
-static NSString * const setClosedCaptionsEnabledAction = @"org.jitsi.meet.SET_CLOSED_CAPTIONS_ENABLED";
+static NSString * const hangUpAction = @"com.vietconsultant.advancedcare.meet.HANG_UP";
+static NSString * const setAudioMutedAction = @"com.vietconsultant.advancedcare.meet.SET_AUDIO_MUTED";
+static NSString * const sendEndpointTextMessageAction = @"com.vietconsultant.advancedcare.meet.SEND_ENDPOINT_TEXT_MESSAGE";
+static NSString * const toggleScreenShareAction = @"com.vietconsultant.advancedcare.meet.TOGGLE_SCREEN_SHARE";
+static NSString * const retrieveParticipantsInfoAction = @"com.vietconsultant.advancedcare.meet.RETRIEVE_PARTICIPANTS_INFO";
+static NSString * const openChatAction = @"com.vietconsultant.advancedcare.meet.OPEN_CHAT";
+static NSString * const closeChatAction = @"com.vietconsultant.advancedcare.meet.CLOSE_CHAT";
+static NSString * const sendChatMessageAction = @"com.vietconsultant.advancedcare.meet.SEND_CHAT_MESSAGE";
+static NSString * const setVideoMutedAction = @"com.vietconsultant.advancedcare.meet.SET_VIDEO_MUTED";
+static NSString * const setClosedCaptionsEnabledAction = @"com.vietconsultant.advancedcare.meet.SET_CLOSED_CAPTIONS_ENABLED";
 
 @implementation ExternalAPI
 
@@ -93,7 +93,7 @@ RCT_EXPORT_METHOD(sendEvent:(NSString *)name
         [self onParticipantsInfoRetrieved: data];
         return;
     }
-    
+
     [[NSNotificationCenter defaultCenter] postNotificationName:sendEventNotificationName
                                                         object:nil
                                                       userInfo:@{@"name": name, @"data": data}];
@@ -102,7 +102,7 @@ RCT_EXPORT_METHOD(sendEvent:(NSString *)name
 - (void) onParticipantsInfoRetrieved:(NSDictionary *)data {
     NSArray *participantsInfoArray = [data objectForKey:@"participantsInfo"];
     NSString *completionHandlerId = [data objectForKey:@"requestId"];
-    
+
     void (^completionHandler)(NSArray*) = [participantInfoCompletionHandlers objectForKey:completionHandlerId];
     completionHandler(participantsInfoArray);
     [participantInfoCompletionHandlers removeObjectForKey:completionHandlerId];
@@ -122,30 +122,30 @@ RCT_EXPORT_METHOD(sendEvent:(NSString *)name
     NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
     data[@"to"] = to;
     data[@"message"] = message;
-    
+
     [self sendEventWithName:sendEndpointTextMessageAction body:data];
 }
 
 - (void)toggleScreenShare:(BOOL)enabled {
     NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
     data[@"enabled"] = [NSNumber numberWithBool:enabled];
-    
+
     [self sendEventWithName:toggleScreenShareAction body:data];
 }
 
 - (void)retrieveParticipantsInfo:(void (^)(NSArray*))completionHandler {
     NSString *completionHandlerId = [[NSUUID UUID] UUIDString];
     NSDictionary *data = @{ @"requestId": completionHandlerId};
-    
+
     [participantInfoCompletionHandlers setObject:[completionHandler copy] forKey:completionHandlerId];
-    
+
     [self sendEventWithName:retrieveParticipantsInfoAction body:data];
 }
 
 - (void)openChat:(NSString*)to {
     NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
     data[@"to"] = to;
-    
+
     [self sendEventWithName:openChatAction body:data];
 }
 
@@ -157,7 +157,7 @@ RCT_EXPORT_METHOD(sendEvent:(NSString *)name
     NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
     data[@"to"] = to;
     data[@"message"] = message;
-    
+
     [self sendEventWithName:sendChatMessageAction body:data];
 }
 

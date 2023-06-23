@@ -30,7 +30,7 @@
     JitsiMeet *jitsiMeet = [JitsiMeet sharedInstance];
 
     jitsiMeet.conferenceActivityType = JitsiMeetConferenceActivityType;
-    jitsiMeet.customUrlScheme = @"org.jitsi.meet";
+    jitsiMeet.customUrlScheme = @"com.vietconsultant.advancedcare.meet";
     jitsiMeet.universalLinkDomains = @[@"meet.jit.si", @"alpha.jitsi.net", @"beta.meet.jit.si"];
 
     jitsiMeet.defaultConferenceOptions = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {
@@ -38,7 +38,7 @@
         [builder setFeatureFlag:@"resolution" withValue:@(360)];
         [builder setFeatureFlag:@"ios.screensharing.enabled" withBoolean:YES];
         [builder setFeatureFlag:@"ios.recording.enabled" withBoolean:YES];
-        builder.serverURL = [NSURL URLWithString:@"https://meet.jit.si"];
+        builder.serverURL = [NSURL URLWithString:@"https://atlmeet2.advancedcare.com"];
 #if TARGET_IPHONE_SIMULATOR
         // CallKit has started to create problems starting with the iOS 16 simulator.
         // Disable it since it never worked in the simulator anyway.
@@ -131,7 +131,7 @@
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application
   supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    return [[JitsiMeet sharedInstance] application:application 
+    return [[JitsiMeet sharedInstance] application:application
            supportedInterfaceOrientationsForWindow:window];
 }
 

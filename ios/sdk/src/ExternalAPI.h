@@ -16,7 +16,7 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
-static NSString * const sendEventNotificationName = @"org.jitsi.meet.SendEvent";
+static NSString * const sendEventNotificationName = @"com.vietconsultant.advancedcare.meet.SendEvent";
 
 @interface ExternalAPI : RCTEventEmitter<RCTBridgeModule>
 
